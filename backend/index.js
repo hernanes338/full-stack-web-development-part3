@@ -23,6 +23,11 @@ let persons = [
         "id": "4",
         "name": "Mary Poppendieck",
         "number": "39-23-6423122"
+    },
+    {
+        "id": "5",
+        "name": "Phone To Delete",
+        "number": "96-123-5887"
     }
 
 ]
@@ -46,11 +51,19 @@ app.get('/api/persons/:id', (request, response) => {
     const person = persons.find(p => p.id === id)
 
     if (person) {
-      response.json(person)
+        response.json(person)
     } else {
-      console.log('Person not found')
-      response.status(404).end()
+        console.log('Person not found')
+        response.status(404).end()
     }
+})
+
+app.delete('/api/persons/:id', (request, response) => {
+    const id = request.params.id
+    persons = persons.filter(p => p.id !== id)
+  
+    console.log('Person deleted')
+    response.status(204).end()
   })
 
 const PORT = 3001
