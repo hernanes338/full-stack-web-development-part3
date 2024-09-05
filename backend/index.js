@@ -63,6 +63,18 @@ const generateId = () =>  String(getRandomIntInclusive(5, 10000))
   
   app.post('/api/persons', (request, response) => {
     const body = request.body
+
+    if (!body.name || !body.number) {
+        return response.status(400).json({
+          error: 'Name or Number are missing'
+        }).end()
+      }
+
+    if (persons.find(p => p.name === body.name)) {
+        return response.status(409).json({
+          error: 'Name must be unique'
+        }).end()
+      }
   
     const person = {
       name: body.name,
