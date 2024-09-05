@@ -23,11 +23,6 @@ let persons = [
         "id": "4",
         "name": "Mary Poppendieck",
         "number": "39-23-6423122"
-    },
-    {
-        "id": "5",
-        "name": "Phone To Delete",
-        "number": "96-123-5887"
     }
 
 ]
@@ -57,6 +52,28 @@ app.get('/api/persons/:id', (request, response) => {
         response.status(404).end()
     }
 })
+
+function getRandomIntInclusive(min, max) {
+    const minCeiled = Math.ceil(min);
+    const maxFloored = Math.floor(max);
+    return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled); // The maximum is inclusive and the minimum is inclusive
+  }
+
+const generateId = () =>  String(getRandomIntInclusive(5, 10000))
+  
+  app.post('/api/persons', (request, response) => {
+    const body = request.body
+  
+    const person = {
+      name: body.name,
+      number: body.number,
+      id: generateId(),
+    }
+  
+    persons = persons.concat(person)
+  
+    response.json(person)
+  })
 
 app.delete('/api/persons/:id', (request, response) => {
     const id = request.params.id
